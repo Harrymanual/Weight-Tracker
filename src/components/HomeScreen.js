@@ -15,8 +15,8 @@ const HomeScreen = ({ navigation }) => {
           onPress={() => navigation.navigate('Graph')}
         />
         <Button
-          title="Edit Data"
-          onPress={() => navigation.navigate('EditData')}
+          title="debug"
+          onPress={() => navigation.navigate('DebugScreen')}
         />
       </View>
     </View>

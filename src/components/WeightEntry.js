@@ -1,19 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import * as SQLite from 'expo-sqlite';
-
-const db = SQLite.openDatabase("db.db");
+import { getWeightByDate, insertWeight, updateWeight } from './Database';
 
 const WeightEntry = () => {
   const [weight, setWeight] = useState('');
   const [status, setStatus] = useState('Not Completed');
+  const [submitted, setSubmitted] = useState(false);
+
+  const today = new Date();
+  const dateString = today.toISOString().split('T')[0];  // get YYYY-MM-DD format
 
   useEffect(() => {
-    // TODO: check if today's weight has been entered and set status
-  }, []);
+    getWeightByDate(dateString, (weights) => {
+      if (weights.length > 0) {
+        setWeight(weights[0].weight.toString());
+        setStatus('Completed');
+      }
+    });
+  }, [submitted]);
 
   const submitWeight = () => {
-    // TODO: store weight in the database and set status to 'Completed'
+    console.log('submitWeight called');
+    getWeightByDate(dateString, (weights) => {
+      if (weights.length > 0) {
+        updateWeight(weights[0].id, parseFloat(weight));
+      } else {
+        insertWeight(dateString, parseFloat(weight));
+      }
+      setStatus('Completed');
+      setWeight(''); // clear the weight input
+    });
   };
 
   return (
@@ -37,7 +53,25 @@ const WeightEntry = () => {
 };
 
 const styles = StyleSheet.create({
-  // TODO: define your styles
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    width: '80%',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  completed: {
+    color: 'green',
+  },
+  notCompleted: {
+    color: 'red',
+  },
 });
 
 export default WeightEntry;
