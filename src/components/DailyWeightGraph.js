@@ -1,56 +1,98 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Dimensions, Text } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
-import { getWeights } from './Database'; // replace this with the relative path to your database file
+import { Dimensions, StyleSheet, View, Text } from 'react-native';
+import { getAllKeys, getMultipleWeights } from './Database';
+import { VictoryLine, VictoryAxis, VictoryScatter } from 'victory-native';
+import { scaleTime, scaleLinear } from 'd3-scale';
 
 const DailyWeightGraph = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
+  const [minWeight, setMinWeight] = useState(0);
+  const [maxWeight, setMaxWeight] = useState(0);
+  const [yMin, setYMin] = useState(0);
+  const [yMax, setYMax] = useState(0);
 
   useEffect(() => {
-    getWeights((weights) => {
-      let dates = weights.map(({ date }) => date);
-      let weightData = weights.map(({ weight }) => weight);
+    const fetchWeights = async () => {
+      const keys = await getAllKeys();
+      console.log("getAllKeys returned:", keys);
+      const weights = keys ? await getMultipleWeights(keys) : [];
+      console.log("getMultipleWeights returned:", weights);
+      if (weights) {
+        // Sort data by date
+        weights.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-      setData({
-        labels: dates,
-        datasets: [
-          {
-            data: weightData,
-          },
-        ],
-      });
-    });
+        // Update minWeight and maxWeight
+        const weightValues = weights.map((item) => item.weight);
+        const min = Math.min(...weightValues);
+        const max = Math.max(...weightValues);
+        setMinWeight(min);
+        setMaxWeight(max);
+
+        // Update yMin and yMax
+        setYMin(min - 2);
+        setYMax(max + 2);
+      }
+      setData(weights || []);
+    };
+
+    fetchWeights();
   }, []);
 
-  if (!data) {
+  if (!data.length) {
     return (
       <View style={styles.container}>
-        <Text>Loading...</Text>
+        <Text>No data to display</Text>
       </View>
     );
   }
+  console.log("Data for chart:", data);
+
+  const formatX = (value) => {
+    const date = new Date(value);
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  };
+
+  const formatY = (value) => {
+    return `${value} kg`;
+  };
+
+  const xAccessor = (item) => new Date(item.date);
+  const yAccessor = (item) => item.weight;
+  console.log(xAccessor);
+  console.log(yAccessor);
+
+  const { width: SIZE } = Dimensions.get('window');
 
   return (
     <View style={styles.container}>
-      <LineChart
+      <VictoryLine
         data={data}
-        width={Dimensions.get("window").width - 10} // from react-native
-        height={220}
-        chartConfig={{
-          backgroundColor: "#e26a00",
-          backgroundGradientFrom: "#fb8c00",
-          backgroundGradientTo: "#ffa726",
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
-            borderRadius: 16
-          }
-        }}
-        bezier
+        x={(datum) => xAccessor(datum)}
+        y={(datum) => yAccessor(datum)}
+        scale={{ x: scaleTime(), y: scaleLinear().domain([yMin, yMax]) }}
         style={{
-          marginVertical: 8,
-          borderRadius: 16
+          data: { stroke: 'black', strokeWidth: 2 },
         }}
+      />
+      <VictoryScatter
+        data={data}
+        x={(datum) => xAccessor(datum)}
+        y={(datum) => yAccessor(datum)}
+        scale={{ x: scaleTime(), y: scaleLinear().domain([yMin, yMax]) }}
+        size={4}
+        style={{
+          data: { fill: 'black' },
+        }}
+      />
+      <VictoryAxis
+        dependentAxis
+        tickFormat={(value) => formatY(value)}
+        style={{ axisLabel: { padding: 30, color: 'black' } }}
+        domain={[yMin, yMax]}
+      />
+      <VictoryAxis
+        tickFormat={(value) => formatX(value)}
+        style={{ axisLabel: { padding:30, color: 'black' } }}
       />
     </View>
   );

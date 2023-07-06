@@ -1,39 +1,47 @@
-import * as SQLite from 'expo-sqlite';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const db = SQLite.openDatabase('weights.db');
+export const storeWeight = async (date, weight) => {
+  try {
+    await AsyncStorage.setItem(date, weight);
+  } catch (error) {
+    console.log('Error saving data: ', error);
+  }
+};
 
-export const initializeDB = () => {
-  db.transaction(tx => {
-    tx.executeSql(
-      "create table if not exists weights (id integer primary key not null, date text, weight real);"
-    );
-  });
+export const getWeight = async (date) => {
+  try {
+    const value = await AsyncStorage.getItem(date);
+    return value != null ? Number(value) : null;
+  } catch (error) {
+    console.log('Error retrieving data: ', error);
+  }
+};
+
+export const getAllKeys = async () => {
+  let keys = []
+  try {
+    keys = await AsyncStorage.getAllKeys();
+  } catch(e) {
+    console.log('Error fetching keys: ', e);
+  }
+  return keys;
 }
 
-export const getWeights = (callback) => {
-  db.transaction(tx => {
-    tx.executeSql('select * from weights;', [], (_, { rows }) =>
-      callback(rows._array)
-    );
-  });
-}
+export const getMultipleWeights = async (keys) => {
+  let weights = [];
+  try {
+    const result = await AsyncStorage.multiGet(keys);
+    weights = result.map(req => ({date: req[0], weight: Number(req[1])}));
+  } catch (error) {
+    console.log('Error fetching multiple weights: ', error);
+  }
+  return weights;
+};
 
-export const insertWeight = (date, weight) => {
-  db.transaction(tx => {
-    tx.executeSql('insert into weights (date, weight) values (?, ?);', [date, weight]);
-  });
-}
-
-export const updateWeight = (id, weight) => {
-  db.transaction(tx => {
-    tx.executeSql('update weights set weight = ? where id = ?;', [weight, id]);
-  });
-}
-
-export const getWeightByDate = (date, callback) => {
-    db.transaction(tx => {
-      tx.executeSql('select * from weights where date = ?;', [date], (_, { rows }) =>
-        callback(rows._array)
-      );
-    });
-  };
+export const clearDatabase = async () => {
+  try {
+    await AsyncStorage.clear();
+  } catch(e) {
+    console.log('Error clearing database: ', e);
+  }
+};

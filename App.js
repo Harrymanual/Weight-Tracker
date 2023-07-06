@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Navigation from './src/Navigation';
 
 export default function App() {
+
   return (
     <View style={styles.container}>
       <Navigation />
@@ -15,6 +16,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff', // Set your desired background color here
+    backgroundColor: '#8F1923', // Set your desired background color here
   },
 });
