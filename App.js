@@ -7,7 +7,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Navigation />
-      <StatusBar style="auto" />
+      <StatusBar style="dark-content" />
     </View>
   );
 }
@@ -15,6 +15,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#8F1923', // Set your desired background color here
+    backgroundColor: '#fff', // Set your desired background color here
   },
 });

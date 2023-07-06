@@ -11,7 +11,7 @@ const HomeScreen = ({ navigation }) => {
           onPress={() => navigation.navigate('WeightEntry')}
         />
         <Button
-          title="Graph"
+          title="Graphs"
           onPress={() => navigation.navigate('Graph')}
         />
         <Button
