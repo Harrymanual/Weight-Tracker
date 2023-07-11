@@ -1,30 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { getWeight, storeWeight } from './Database';
 
 const WeightEntry = () => {
   const [weight, setWeight] = useState('');
-  const [status, setStatus] = useState('Not Completed');
-
-  const today = new Date();
-  const dateString = today.toISOString().split('T')[0];  // get YYYY-MM-DD format
+  const [status, setStatus] = useState(false);
+  const [dateString, setDateString] = useState(getTodaysDateString());
 
   useEffect(() => {
     const fetchWeight = async () => {
       const weight = await getWeight(dateString);
       if (weight !== null) {
         setWeight(weight.toString());
-        setStatus('Completed');
+        setStatus(true);
+      } else {
+        setStatus(false);
       }
     };
 
     fetchWeight();
+  }, [dateString]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setDateString(getTodaysDateString());
+    }, 60 * 60 * 1000);  // check for date change every hour
+
+    return () => {
+      clearInterval(timer);  // cleanup on unmount
+    };
   }, []);
 
   const submitWeight = async () => {
+    if (isNaN(weight)) {
+      Alert.alert('Invalid input', 'Please enter a valid number');
+      return;
+    }
+
     console.log('submitWeight called');
     await storeWeight(dateString, weight);
-    setStatus('Completed');
+    setStatus(true);
     setWeight(''); // clear the weight input
   };
 
@@ -41,12 +56,17 @@ const WeightEntry = () => {
         title="Submit"
         onPress={submitWeight}
       />
-      <Text style={status === 'Completed' ? styles.completed : styles.notCompleted}>
-        {status}
+      <Text style={status ? styles.completed : styles.notCompleted}>
+        {status ? 'Completed' : 'Not Completed'}
       </Text>
     </View>
   );
 };
+
+function getTodaysDateString() {
+  const today = new Date();
+  return today.toISOString().split('T')[0];  // get YYYY-MM-DD format
+}
 
 const styles = StyleSheet.create({
   container: {
