@@ -17,13 +17,13 @@ const Navigation = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="WeightEntry" component={WeightEntry} />
+        <Stack.Screen name="WeightEntry" component={WeightEntry} options={{ title: 'Weight Entry' }} />
         <Stack.Screen name="Graph" component={Graph} />
-        <Stack.Screen name="DailyWeightGraph" component={DailyWeightGraph} />
-        <Stack.Screen name="ThreeDayAverageGraph" component={ThreeDayAverageGraph} />
-        <Stack.Screen name="FiveDayAverageGraph" component={FiveDayAverageGraph} />
-        <Stack.Screen name="TenDayAverageGraph" component={TenDayAverageGraph} />
-        <Stack.Screen name="DebugScreen" component={DebugScreen} options={{ title: 'Debug Screen' }} />
+        <Stack.Screen name="DailyWeightGraph" component={DailyWeightGraph} options={{ title: 'Daily Weight' }}/>
+        <Stack.Screen name="ThreeDayAverageGraph" component={ThreeDayAverageGraph} options={{ title: 'Three Day Rolling Average' }} />
+        <Stack.Screen name="FiveDayAverageGraph" component={FiveDayAverageGraph} options={{ title: 'Five Day Rolling Average' }} />
+        <Stack.Screen name="TenDayAverageGraph" component={TenDayAverageGraph} options={{ title: 'Ten Day Rolling Average' }} />
+        <Stack.Screen name="DebugScreen" component={DebugScreen} options={{ title: 'Editing Screen' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

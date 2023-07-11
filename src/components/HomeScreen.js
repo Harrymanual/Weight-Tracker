@@ -15,7 +15,7 @@ const HomeScreen = ({ navigation }) => {
           onPress={() => navigation.navigate('Graph')}
         />
         <Button
-          title="debug"
+          title="Edit Weights"
           onPress={() => navigation.navigate('DebugScreen')}
         />
       </View>
