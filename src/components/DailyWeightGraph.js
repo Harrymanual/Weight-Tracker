@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import { getAllKeys, getMultipleWeights } from './Database';
+import { Dimensions } from 'react-native'; // Add this import
 
 const DailyWeightGraph = () => {
   const [data, setData] = useState([]);
@@ -23,16 +24,37 @@ const DailyWeightGraph = () => {
   const weightData = data.map(item => item.weight);
   const dateData = data.map(item => item.date);
 
+  // Get the window height
+  const windowHeight = Dimensions.get('window').height;
+
+  // Calculate 90% of the window height
+  const chartHeight = windowHeight * 0.9;
+
+  let maxPoints = Math.min(14, dateData.length - 1);
+
   let htmlContent = `
     <!DOCTYPE html>
     <html>
     <head>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <style>
+    #container {
+      height: ${chartHeight}px; /* Set the chart height here */
+      width: 100%;
+    }
+    </style>
     </head>
     <body>
     <div id="container"></div>
     <script>
     Highcharts.chart('container', {
+      chart: {
+        type: 'line',
+        scrollablePlotArea: {
+          minWidth: ${dateData.length * 100}, 
+          scrollPositionX: 1
+        }
+      },
       title: {
         text: 'Daily Weight'
       },
@@ -40,6 +62,11 @@ const DailyWeightGraph = () => {
         categories: ${JSON.stringify(dateData)},
         labels: {
           rotation: -45
+        },
+        min: 0, // The lowest value to show on x-axis
+        max: ${maxPoints}, // The highest value to show on x-axis. Set this to one less than the number of data points you want to display at once (because the array index starts at 0).
+        scrollbar: {
+          enabled: true
         }
       },
       yAxis: {
@@ -55,7 +82,7 @@ const DailyWeightGraph = () => {
     </script>
     </body>
     </html>
-  `;
+    `;
 
   return (
     <WebView

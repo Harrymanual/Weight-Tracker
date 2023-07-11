@@ -23,7 +23,7 @@ const Navigation = () => {
         <Stack.Screen name="ThreeDayAverageGraph" component={ThreeDayAverageGraph} />
         <Stack.Screen name="FiveDayAverageGraph" component={FiveDayAverageGraph} />
         <Stack.Screen name="TenDayAverageGraph" component={TenDayAverageGraph} />
-        <Stack.Screen name="DebugScreen" component={DebugScreen} />
+        <Stack.Screen name="DebugScreen" component={DebugScreen} options={{ title: 'Debug Screen' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
