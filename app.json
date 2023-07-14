@@ -1,9 +1,8 @@
 {
   "expo": {
-    "name": "WeightTracker",
+    "name": "Weight Tracker",
     "slug": "WeightTracker",
     "version": "1.0.0",
-    "orientation": "landscape",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -18,13 +17,15 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+      "package": "com.harrison1.WeightTracker"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1424342e-ec55-4fd5-857e-141f02ba76fd"
+      }
     }
   }
 }
