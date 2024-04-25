@@ -17,7 +17,7 @@
 
 ### Graphs
 <div>
-<img src="./working_images/dailyweight.jpg" alt="Daily Weight" width="33%">
-<img src="./working_images/3day.jpg" alt="3 Day Rolling Average" width="33%">
-<img src="./working_images/5day.jpg" alt="5 Day Rolling Average" width="33%">
+<img src="./working_images/dailyweight.jpg" alt="Daily Weight" width="25%">
+<img src="./working_images/3day.jpg" alt="3 Day Rolling Average" width="25%">
+<img src="./working_images/5day.jpg" alt="5 Day Rolling Average" width="25%">
 </div>
