@@ -1,23 +1,23 @@
 ### Home
-![Home](./working_images/home.jpg "Home")
+<img src="./working_images/home.jpg" alt="Home" width="50%">
 
 ### Incomplete Weight Entry
-![Incomplete Weight Entry](./working_images/weightentrynotcomplete.jpg "Incomplete Weight Entry")
+<img src="./working_images/weightentrynotcomplete.jpg" alt="Incomplete Weight Entry" width="50%">
 
 ### Complete Weight Entry
-![Complete Weight Entry](./working_images/weightentrycomplete.jpg "Complete Weight Entry")
+<img src="./working_images/weightentrycomplete.jpg" alt="Complete Weight Entry" width="50%">
 
 ### Editable Database
-![Editable Database](./working_images/database.jpg "Editable Database")
+<img src="./working_images/database.jpg" alt="Editable Database" width="50%">
 
 ### Graphs Page
-![Graphs Page](./working_images/graphs.jpg "Graphs Page")
+<img src="./working_images/graphs.jpg" alt="Graphs Page" width="50%">
 
 ### Daily Weight
-![Daily Weight](./working_images/dailyweight.jpg "Daily Weight")
+<img src="./working_images/dailyweight.jpg" alt="Daily Weight" width="50%">
 
 ### 3 Day Rolling Average
-![3 Day Rolling Average](./working_images/3day.jpg "3 Day Rolling Average")
+<img src="./working_images/3day.jpg" alt="3 Day Rolling Average" width="50%">
 
 ### 5 Day Rolling Average
-![5 Day Rolling Average](./working_images/5day.jpg "5 Day Rolling Average")
+<img src="./working_images/5day.jpg" alt="5 Day Rolling Average" width="50%">
